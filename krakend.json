@@ -1,0 +1,846 @@
+{
+  "version": 3,
+  "name": "SMTrack Gateway",
+  "port": 8080,
+  "timeout": "60s",
+  "extra_config": {
+    "router": {
+      "return_error_msg": true,
+      "logger_skip_paths": [
+        "/__health"
+      ]
+    },
+    "security/cors": {
+      "allow_origins": [
+        "*"
+      ],
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ]
+    },
+    "telemetry/opentelemetry": {
+      "service_name": "krakend_prometheus_service",
+      "metric_reporting_period": 1,
+      "exporters": {
+        "prometheus": [
+          {
+            "name": "local_prometheus",
+            "port": 9090,
+            "process_metrics": true,
+            "go_metrics": true
+          }
+        ]
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/smtrack/history/device",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/device/history",
+          "method": "GET",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/device/devices/list",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/device/devices/list",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/templog/history/notification",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/templog/history/notification",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/templog/dashboard/count",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/templog/dashboard/count",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/templog/alert/notification",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/templog/alert/notification",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/templog/alert/notification",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/legacy/templog/alert/notification",
+          "method": "POST",
+          "encoding": "no-op",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/device/change/token/{id}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/device/change/token/{id}",
+          "method": "GET",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/{path}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/{path}",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/{path}/{id}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/{path}/{id}",
+          "method": "GET",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/{path}/{id}",
+      "method": "PUT",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/{path}/{id}",
+          "method": "PUT",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/{path}/{id}",
+      "method": "DELETE",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/{path}/{id}",
+          "method": "DELETE",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/templog",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/legacy/templog",
+          "method": "POST",
+          "encoding": "no-op",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/legacy/device",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/legacy/device",
+          "method": "POST",
+          "host": [
+            "http://legacy:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}",
+          "method": "POST",
+          "encoding": "no-op",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}",
+          "method": "GET",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}/{id}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}/{id}",
+          "method": "GET",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}/{id}",
+      "method": "PUT",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}/{id}",
+          "method": "PUT",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}/{id}",
+      "method": "PATCH",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}/{id}",
+          "method": "PATCH",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/auth/{path}/{id}",
+      "method": "DELETE",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/auth/{path}/{id}",
+          "method": "DELETE",
+          "host": [
+            "http://authentication:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/dashboard/device",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/device/dashboard/device",
+          "method": "GET",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}",
+          "method": "POST",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}",
+          "method": "GET",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}/{id}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}/{id}",
+          "method": "GET",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}/{id}",
+      "method": "DELETE",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}/{id}",
+          "method": "DELETE",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}/{id}",
+      "method": "PUT",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}/{id}",
+          "method": "PUT",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/devices/{path}/{id}",
+      "method": "PATCH",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/{path}/{id}",
+          "method": "PATCH",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/dashboard/count",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/devices/device/dashboard/count",
+          "method": "GET",
+          "host": [
+            "http://device:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/notification/dashboard/count",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/notification/dashboard/count",
+          "method": "GET",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/notification/history/filter",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/notification/history/filter",
+          "method": "GET",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/device/online",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/device/online",
+          "method": "POST",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}",
+      "method": "POST",
+      "input_headers": [
+        "*"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/log/{path}",
+          "method": "POST",
+          "encoding": "no-op",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "input_query_strings": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/{path}",
+          "method": "GET",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}/{id}",
+      "method": "GET",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/{path}/{id}",
+          "method": "GET",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}/{id}",
+      "method": "PUT",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/{path}/{id}",
+          "method": "PUT",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}/{id}",
+      "method": "PATCH",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/{path}/{id}",
+          "method": "PATCH",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/smtrack/log/{path}/{id}",
+      "method": "DELETE",
+      "input_headers": [
+        "*"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/log/{path}/{id}",
+          "method": "DELETE",
+          "host": [
+            "http://log:8080"
+          ],
+          "extra_config": {
+            "backend/http": {
+              "return_error_code": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

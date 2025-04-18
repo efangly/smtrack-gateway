@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  namespace: smtrack
+  annotations:
+    cert-manager.io/cluster-issuer: gateway-issuer
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - api.siamatic.dev
+    secretName: gateway-tls
+  rules:
+  - host: api.siamatic.dev
+    http:
+      paths:
+      - path: /smtrack
+        pathType: Prefix
+        backend:
+          service:
+            name: gateway
+            port:
+              number: 8080
+      - path: /socket.io
+        pathType: Prefix
+        backend:
+          service:
+            name: broker
+            port:
+              number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-prod-ingress
+  namespace: smtrack
+  annotations:
+    cert-manager.io/cluster-issuer: gateway-prod-issuer
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - tms.siamatic.co.th
+    secretName: gateway-prod-tls
+  rules:
+  - host: tms.siamatic.co.th
+    http:
+      paths:
+      - path: /smtrack
+        pathType: Prefix
+        backend:
+          service:
+            name: gateway
+            port:
+              number: 8080
+      - path: /socket.io
+        pathType: Prefix
+        backend:
+          service:
+            name: broker
+            port:
+              number: 8080
