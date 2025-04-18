@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: siamatic/gateway:1.19
+        image: siamatic/gateway:1.0.0
         ports:
         - containerPort: 8080
           protocol: TCP
